@@ -1,0 +1,138 @@
+/* A4 page, every length in pt so positions match the original artwork. */
+
+@font-face { font-family: "Open Sans"; font-weight: 300; font-style: normal;
+  src: url(../node_modules/@fontsource/open-sans/files/open-sans-latin-300-normal.woff2) format("woff2"); }
+@font-face { font-family: "Open Sans"; font-weight: 300; font-style: italic;
+  src: url(../node_modules/@fontsource/open-sans/files/open-sans-latin-300-italic.woff2) format("woff2"); }
+@font-face { font-family: "Open Sans"; font-weight: 400; font-style: normal;
+  src: url(../node_modules/@fontsource/open-sans/files/open-sans-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "Open Sans"; font-weight: 600; font-style: normal;
+  src: url(../node_modules/@fontsource/open-sans/files/open-sans-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Open Sans"; font-weight: 700; font-style: normal;
+  src: url(../node_modules/@fontsource/open-sans/files/open-sans-latin-700-normal.woff2) format("woff2"); }
+
+@page { size: 595.28pt 841.89pt; margin: 0; }
+
+:root {
+  --sidebar: #555656;
+  --header: #cdc9c3;
+  --skills: #d3d8de;
+  --hobbies: #cdc9c3;
+  --work: #dddddd;
+  --education: #ede9e2;
+  --future: #c0b2ae;
+  --ink: #555656;
+  --text: #58595b;
+  --muted: #6d6e71;
+  --line: #808285;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #fff; }
+body {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  position: relative;
+  width: 595.28pt;
+  height: 841.89pt;
+  overflow: hidden;
+  color: var(--text);
+}
+
+.abs { position: absolute; }
+.icon svg { display: block; width: 100%; height: 100%; }
+.dim { opacity: .6; }
+
+/* Panels */
+.panel { position: absolute; }
+.sidebar   { left: 7.3pt;  top: 8pt;     width: 134.7pt; height: 826.7pt; background: var(--sidebar); color: #fff; }
+.header    { left: 150.9pt; top: 8pt;    width: 437.4pt; height: 100pt;   background: var(--header); }
+.skills    { left: 150pt;  top: 200.5pt; width: 191.3pt; height: 475.8pt; background: var(--skills); }
+.hobbies   { left: 150pt;  top: 681.6pt; width: 191.3pt; height: 153.1pt; background: var(--hobbies); }
+.work      { left: 348pt;  top: 200.5pt; width: 240.3pt; height: 368.2pt; background: var(--work); }
+.education { left: 348pt;  top: 573.4pt; width: 240.3pt; height: 185pt;   background: var(--education); }
+.future    { left: 348pt;  top: 763.2pt; width: 240.3pt; height: 71.5pt;  background: var(--future); }
+
+.section-title {
+  position: absolute;
+  font-size: 21pt;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+/* Header */
+.name { font-size: 33.2pt; color: var(--ink); white-space: nowrap; }
+.headline { font-size: 12pt; color: var(--ink); white-space: nowrap; }
+.headline .hash { opacity: .4; }
+.uuid { font-size: 12.45pt; color: #fff; white-space: nowrap; }
+.description {
+  font-size: 12pt;
+  line-height: 14.4pt;
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* Sidebar */
+.photo {
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5pt solid #fff;
+  background: #fff;
+}
+.photo img { position: absolute; display: block; }
+.sidebar .blocks {
+  position: absolute;
+  left: 5.1pt;
+  right: 3pt;
+  font-size: 8pt;
+  line-height: 9.6pt;
+  white-space: pre;
+}
+.sidebar .block-icon {
+  margin: 8.3pt auto 8.6pt;
+  height: 16pt;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar .indent { display: inline-block; width: 12pt; }
+.qr { position: absolute; }
+.qr svg { display: block; width: 100%; height: 100%; }
+.social { position: absolute; left: 4.5pt; font-size: 9pt; white-space: nowrap; }
+.social .row { position: absolute; display: flex; align-items: center; }
+
+/* Timelines */
+.entries { position: absolute; }
+.entry { position: relative; }
+.work .entry + .entry { margin-top: 7.84pt; }
+.work .entry .year {
+  position: absolute; left: -59pt; top: 0;
+  font-weight: 600; font-size: 9pt; line-height: 10.8pt; white-space: nowrap;
+}
+.work .entry .title { font-weight: 600; font-size: 9pt; line-height: 10.8pt; }
+.work .entry .company { font-size: 9pt; line-height: 10.8pt; }
+.work .entry .tags { font-weight: 400; font-size: 6pt; line-height: 7.2pt; margin-top: -0.64pt; }
+.tags .hash { opacity: .6; }
+.tags .tag { white-space: nowrap; }
+.city { font-style: italic; }
+
+.education .entry { text-align: right; color: var(--muted); }
+.education .entry + .entry { margin-top: 10.8pt; }
+.education .school { font-weight: 600; font-size: 9pt; line-height: 10.8pt; white-space: nowrap; }
+.education .degree { font-style: italic; font-size: 9pt; line-height: 10.8pt; white-space: nowrap; }
+.education .year {
+  position: absolute; left: calc(100% + 9.6pt); top: 0;
+  font-weight: 600; font-size: 9pt; line-height: 10.8pt; white-space: nowrap; text-align: left;
+}
+
+.future-item { position: absolute; font-size: 10.27pt; line-height: 1; white-space: nowrap; }
+
+svg.overlay { position: absolute; left: 0; top: 0; width: 595.28pt; height: 841.89pt; overflow: visible; }
+svg.overlay text { font-family: "Open Sans", sans-serif; }

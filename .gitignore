@@ -2,3 +2,5 @@ node_modules
 docs/.vuepress/dist/
 .temp
 .cache
+cv/debug.pdf
+cv/debug.png

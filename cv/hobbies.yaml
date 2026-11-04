@@ -1,0 +1,62 @@
+# Hobbies word cloud of the PDF résumé. Same format as skills.yaml.
+
+style:
+  base: 4.2
+  ratio: 1.27
+  padding: 0.6
+  spill: 6
+  vertical: 0
+  colors: {key: "#58595b", normal: "#808285"}
+  weights: {key: light, normal: light}
+
+rows:
+  - [[Photography, Food], Science]
+  - [Culture, Internet]
+  - [Programming]
+
+groups:
+  - name: Science
+    skills:
+      Science: {level: 8, key: true}
+      Discovering: 5
+      Optics: 4
+      Physics: 4
+      Cosmology: 4
+      Learn: 4
+
+  - name: Food
+    skills:
+      Cooking: {level: 6, key: true}
+      Baking: 4
+      Food: 3
+      World food: 3
+
+  - name: Photography
+    skills:
+      Photography: 5
+      Nature: 3
+      People: 3
+      Canon: 3
+
+  - name: Internet
+    skills:
+      Internet: {level: 6, key: true}
+      TED: 5
+      HackerNews: 4
+      Netflix: 4
+      Documentary: 4
+      IRC: 3
+      Reddit: 2
+      9GAG: 1
+
+  - name: Culture
+    skills:
+      Movies: 5
+      Books: 5
+      Piano: 5
+
+  - name: Programming
+    skills:
+      Programming: {level: 6, key: true}
+      Hacking: 4
+      Security: 4

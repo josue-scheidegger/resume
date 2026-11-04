@@ -1,0 +1,248 @@
+# Skills word cloud of the PDF résumé (rendered by cv/build.mjs).
+#
+# Each group is a family of related skills; its words are kept together in
+# one area of the panel. Every skill is either a bare level or an object:
+#
+#   Python: 7                       # level only
+#   C++: {level: 7, key: true}      # with options
+#
+#   level   1..10  mastery, drives the font size
+#                  (size = base × ratio^(level-1), then the whole cloud is
+#                  scaled up as much as the panel allows)
+#   key     true   main skill of the group: dark colour, regular weight
+#   weight  light | regular | semibold | bold   overrides the font weight
+#   rotate  true | false   force vertical / horizontal (default: automatic)
+#
+# `rows` arranges the groups in the panel, top to bottom. A row is split
+# horizontally between its groups in proportion to their size; a nested
+# list inside a row is stacked vertically (and so on, alternating).
+# Groups missing from `rows` are appended at the bottom.
+
+style:
+  base: 4.2           # font size (pt) of level 1, before scaling
+  ratio: 1.27         # size factor between two consecutive levels
+  padding: 0.6        # minimal gap between two words (pt)
+  spill: 6            # how far (pt) a group may overflow its area
+  vertical: 0.22      # share of words drawn vertically
+  colors: {key: "#58595b", normal: "#808285"}
+  weights: {key: regular, normal: light}
+
+rows:
+  - [Python, C, [PHP, Perl]]
+  - [Methods, Quality]
+  - [Version control, Regex]
+  - [Build, Electronics]
+  - [Design, Fieldbus]
+  - [Motion control]
+  - [Optics, Operating systems, Shell]
+  - [Web, [Workshop, Documents]]
+
+groups:
+  - name: C
+    skills:
+      C: {level: 10, key: true}
+      C++: {level: 7, key: true, weight: bold}
+      "C#": 5
+      C99: 5
+      C17: 3
+      MISRA: 5
+      gcc: 5
+      clang: 3
+      IAR: 4
+      Doxygen: 3
+
+  - name: Python
+    skills:
+      Python: {level: 7, key: true}
+      PIP: 5
+      IPython: 4
+      Pandas: 3
+      Jupyter: 3
+      PEP8: 3
+      PEP20: 3
+      "2.7": 3
+      "3.7": 3
+      Ctype: 3
+      Pint: 3
+      Jinja2: 3
+      Sphinx: 3
+      Mako: 3
+
+  - name: PHP
+    skills:
+      PHP: 6
+      Laravel: 2
+      Composer: 1
+      MVC: 2
+      "--/---/.-./...": 2
+
+  - name: Perl
+    skills:
+      Perl: 7
+      CPAN: 1
+      "-pi -e": 1
+      one-liners: 1
+
+  - name: Methods
+    skills:
+      Agile: {level: 7, key: true}
+      DRY: 5
+      KISS: 5
+      UML: 5
+      Scrum: 4
+      XP: 4
+      SOLID: 4
+      SSOT: 3
+      OOP: 3
+      BPMN: 3
+
+  - name: Quality
+    skills:
+      ISO9001: 2
+      ISO62304: 2
+      ISO13485: 2
+      Semver: 2
+
+  - name: Version control
+    skills:
+      git: {level: 9, key: true}
+      SCM: {level: 8, key: true}
+      Subversion: 5
+      ClearCase: 4
+      GitHub: 2
+      Subtree: 2
+      LFS: 2
+
+  - name: Regex
+    skills:
+      m/regex/gi: 6
+      PCRE: {level: 5, key: true}
+      BRE: 4
+      ERE: 4
+
+  - name: Build
+    skills:
+      Make: 6
+      Build Automation: {level: 5, weight: regular}
+      CI: 3
+      Testing: 3
+      Astyle: 3
+
+  - name: Electronics
+    skills:
+      EDA: {level: 6, key: true}
+      Altium: 5
+      Schematic: 4
+      PCB Routing: 4
+      OrCAD: 2
+      BGA: 2
+      10-layers: 1
+
+  - name: Design
+    skills:
+      Design: {level: 6, key: true}
+      CAD: {level: 6, key: true}
+      SolidWorks: 5
+      Illustrator: 4
+      Photoshop: 3
+      Lightroom: 3
+      Ergonomics: 3
+
+  - name: Fieldbus
+    skills:
+      Fieldbus: {level: 6, weight: regular}
+      I2C: 4
+      EnOcean: 3
+      Z-Wave: 3
+      LonWorks: 3
+      DALI: 3
+      EtherCAT: 3
+      CANopen: 3
+      TransnET: 3
+
+  - name: Motion control
+    skills:
+      Motion Control: {level: 7, key: true}
+      Motors: 4
+      ETEL: 4
+      SHARC: 4
+      ADSP-21371: 4
+      TI-28x: 4
+      PMSM: 3
+      Ironless: 3
+      SinCos: 3
+      Vector Control: 3
+      Realtime Programming: 3
+      Resolver: 2
+      PFC: 2
+
+  - name: Optics
+    skills:
+      Optics: {level: 6, key: true}
+      Lasers: 4
+      Optical Tweezers: 3
+      Holography: 3
+      Thorlabs: 3
+      Tomography: 1
+
+  - name: Operating systems
+    skills:
+      Linux: {level: 8, key: true}
+      Windows: {level: 7, key: true}
+      Ubuntu: 4
+      WSL: 4
+      POSIX: 4
+      Cygwin: 3
+      Debian: 2
+
+  - name: Shell
+    skills:
+      Vim: 8
+      Bash: {level: 5, key: true, weight: light}
+      Grep: 4
+      Sed: 4
+      ED: 2
+
+  - name: Workshop
+    skills:
+      Workshop: 5
+      Milling: 5
+      Lathe: 5
+      Bronze: 3
+      Brass: 3
+      Aluminum: 3
+      Steel: 3
+      Anodizing: 2
+
+  - name: Web
+    skills:
+      Web: {level: 7, key: true}
+      Vue.js: 6
+      Bootstrap: 5
+      SASS: 5
+      JavaScript: 4
+      HTML5: 4
+      Canvas: 4
+      CSS: 4
+      Webpack: 4
+      npm: 4
+      Apache2: 4
+      MySQL: 4
+      Babel: 3
+      ES15: 3
+      ES16: 3
+      ES17: 3
+      jQuery: 3
+      SVG: 3
+      MongoDB: 2
+
+  - name: Documents
+    skills:
+      JSON: 5
+      XML: 5
+      YAML: 4
+      Markdown: 4
+      ReST: 4
+      LaTeX: 4
+      XSLT: 3
+      XSD: 3
