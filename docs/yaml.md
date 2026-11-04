@@ -13,7 +13,7 @@ description: >
     Willing to improve human lives.
     Wish to never stop learning and evolving...
 type: human
-genre: male
+gender: male
 relationship: single
 from: 1982-02-16T20:07:42Z
 height: 1.86±0.01 m
@@ -59,7 +59,7 @@ work:
     title: HES thesis
     company:
       name: IBT
-      city: Thün
+      city: Thun
     tags:
       ? home-automation
       ? lonworks
@@ -184,7 +184,7 @@ work:
       ? fablab
       ? robotics
       ? web
-    postion:
+    position:
       - Associate Professor
       - Embedded Software Developer
 skills:
@@ -194,11 +194,11 @@ skills:
     ? C#
     ? Python
     ? Perl
-    ? Php
+    ? PHP
     ? Git
     ? Bash
   Electronics:
-    ? CanOpen
+    ? CANopen
     ? Motion Control
     ? Altium Designer
   Optics:
@@ -228,12 +228,12 @@ mindset:
   ? Curious
   ? Open-minded
   ? Perfectionist
-  ? Pationate
+  ? Passionate
   ? Creative
   ? Funny
   ? Honest
   ? Hard-working
   ? Geek
-  ? Mensian
+  ? Mensan
   ? Ambivert
 ```
