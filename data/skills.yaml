@@ -64,6 +64,7 @@ groups:
   - name: Business
     skills:
       Entrepreneurship: {level: 8, key: true}
+      Lean Startup: 6
       Business plan: 6
       Pitch: 5
       Fundraising: 5
