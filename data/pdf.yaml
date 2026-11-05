@@ -11,9 +11,25 @@ uuid: d8f6be22-40d0-4041-ab5d-590845b0e337
 headline: [Entrepreneur, AutomationEngineer]
 
 # Printed as print("...") in the sidebar.
-sports: [Systema, Horse riding, Munz Floor]
+sports: [Systema, Horsemanship, Munz Floor]
 
-future: [Community, Real estate]
+future: [Community, Real estate, Hide photography]
+
+# Colours of the page, each set as the CSS variable --<key> (pdf/page.css).
+palette:
+  sidebar: "#2f3e4e"      # panel backgrounds
+  header: "#d5dde5"
+  skills: "#e2e8ee"
+  hobbies: "#dbe3ea"
+  work: "#eceff2"
+  education: "#f2f4f6"
+  future: "#c7d3df"
+  ink: "#2f3e4e"          # name, headline, description
+  text: "#3d4a57"         # body text, section titles
+  muted: "#5b6b7a"        # education entries
+  line: "#4a6e93"         # timelines, future bullets
+  cloud-key: "#4a6e93"    # key words of the clouds
+  cloud: "#6b7a89"        # other words of the clouds
 
 qr:
   url: https://josue-scheidegger.github.io/resume/

@@ -93,6 +93,7 @@ try {
   }
   console.log(`skills: ${stats.skills.words} words, scale ${stats.skills.scale}`)
   console.log(`hobbies: ${stats.hobbies.words} words, scale ${stats.hobbies.scale}`)
+  console.log(`skills panel: ${stats.split} pt high`)
   console.log(`→ ${opt.pdf}${opt.png ? `\n→ ${opt.png}` : ''}`)
 } finally {
   await browser.close()

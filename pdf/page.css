@@ -13,19 +13,7 @@
 
 @page { size: 595.28pt 841.89pt; margin: 0; }
 
-:root {
-  --sidebar: #555656;
-  --header: #cdc9c3;
-  --skills: #d3d8de;
-  --hobbies: #cdc9c3;
-  --work: #dddddd;
-  --education: #ede9e2;
-  --future: #c0b2ae;
-  --ink: #555656;
-  --text: #58595b;
-  --muted: #6d6e71;
-  --line: #808285;
-}
+/* Colours: the --* variables are set from the palette of data/pdf.yaml. */
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #fff; }

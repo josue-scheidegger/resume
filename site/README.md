@@ -12,7 +12,7 @@ actions:
     link: yaml.md
     type: secondary
 features:
-  - title: CEO of LEON-Concept
+  - title: Partner at LEON-Concept
     details: Software, electronics and business development
   - title: Co-founder of Grenat
     details: Improving with AI

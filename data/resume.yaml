@@ -5,7 +5,6 @@ description: >
     Electronics and automation engineer turned entrepreneur.
     I build software and electronics, and the companies that carry them.
     Polymath by nature, persevering by choice.
-    Until lambs become lions.
 type: human
 gender: male
 from: 1997-11-05
@@ -16,7 +15,7 @@ address:
   npa: 1405
   city: Pomy
   country: Switzerland
-  email: josue.scheidegger@leon-concept.swiss
+  email: josue.scheidegger@grenat.tech
   website: https://leon-concept.swiss
 languages:
   french: native
@@ -41,6 +40,7 @@ work:
       city: Bière
     tags:
       ? swiss-army
+      ? infantry-scout
     position:
       - Recruit
   2023-now:
@@ -54,7 +54,7 @@ work:
     position:
       - Co-founder
   2022-now:
-    title: CEO
+    title: Partner
     company:
       name: LEON-Concept Sàrl
       city: Pomy
@@ -66,7 +66,7 @@ work:
       ? community
       ? technical-mandates
     position:
-      - CEO
+      - Partner
   2022-2024:
     title: Applied R&D Associate
     company:
@@ -107,12 +107,19 @@ skills:
     ? Financial forecasts
     ? Recruitment
     ? Intellectual property
+  Military:
+    ? Infantry scout
+    ? Sniper
+    ? Infiltration
+    ? Mortar fire control
+    ? Camouflage
+    ? Intelligence
+    ? Bivouac
+    ? Immediate action drills
 hobbies:
   ? Systema
   ? Spirituality
   ? Horsemanship
-  ? Craftsmanship
-  ? Photography
   ? Psychology
   ? Nature
 mindset:

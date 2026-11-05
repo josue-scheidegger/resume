@@ -2,17 +2,15 @@
 
 style:
   base: 4.2
-  ratio: 1.27
-  padding: 0.6
+  ratio: 1.18
+  padding: 2.4
   spill: 6
   vertical: 0
-  colors: {key: "#58595b", normal: "#808285"}
   weights: {key: light, normal: light}
 
 rows:
   - [Systema, Spirituality]
-  - [[Horsemanship, Craftsmanship], Nature]
-  - [Photography, Psychology]
+  - [Horsemanship, Psychology, Nature]
 
 groups:
   - name: Systema
@@ -39,21 +37,13 @@ groups:
       Grooming: 4
       Liberty work: 4
 
-  - name: Craftsmanship
-    skills:
-      Craftsmanship: {level: 5, key: true}
-
-  - name: Photography
-    skills:
-      Photography: {level: 5, key: true}
-
   - name: Psychology
     skills:
       Psychology: {level: 5, key: true}
+      Jung: 4
 
   - name: Nature
     skills:
       Nature: {level: 6, key: true}
       Wildlife: 4
-      Hunting blind: 3
       Geography: 3

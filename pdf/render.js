@@ -180,7 +180,7 @@ function work(page, d, overlay) {
     if (tags.length) el('div', 'tags', tags.map((t) => `<span class="tag"><span class="hash">#</span>${esc(t)}</span>`).join(' '), e)
     return e
   })
-  return () => timeline(overlay, 359.25, entries.map((e) => boxOf(e).y + 5.34), '#808285')
+  return () => timeline(overlay, 359.25, entries.map((e) => boxOf(e).y + 5.34), d.cv.palette?.line)
 }
 
 function education(page, d, overlay) {
@@ -196,23 +196,52 @@ function education(page, d, overlay) {
     el('div', 'year', esc(yearLabel(years)), e)
     return e
   })
-  return () => timeline(overlay, 571.65, entries.map((e) => boxOf(e).y + 5.34), '#808285')
+  return () => timeline(overlay, 571.65, entries.map((e) => boxOf(e).y + 5.34), d.cv.palette?.line)
 }
 
 function future(page, d, overlay) {
   const p = panel(page, 'future')
   const O = [348, 763.2]
   sectionTitle(p, 'future', 'Future ?', 385.8, 786.6, O)
-  ;(d.cv.future || []).forEach((t, i) => {
+  const items = d.cv.future || []
+  // Zigzag between two columns; the step shrinks so the last item stays in
+  // the panel (baselines from 38.8 to 65 pt).
+  const step = items.length > 1 ? Math.min(19.6, 26.2 / (items.length - 1)) : 0
+  items.forEach((t, i) => {
     const x = O[0] + (i % 2 ? 30.3 : 130.8)
-    const base = O[1] + 38.8 + 19.6 * i
-    svgEl('circle', { cx: x + 3.75, cy: base - 3.05, r: 3.25, fill: 'none', stroke: '#58595b', 'stroke-width': 1 }, overlay)
+    const base = O[1] + 38.8 + step * i
+    svgEl('circle', { cx: x + 3.75, cy: base - 3.05, r: 3.25, fill: 'none', stroke: d.cv.palette?.line, 'stroke-width': 1 }, overlay)
     textAt(p, 'future-item', esc(t), x + 12.4 - O[0], base - O[1], 10.27)
   })
 }
 
-function cloud(overlay, spec, box, debug) {
-  const res = layoutCloud(spec, box)
+// Skills and hobbies share the left column. Its split is searched by bisection
+// so that both clouds come out at the same scale (same font size for a level).
+const COLUMN = { top: 200.5, bottom: 834.7, gap: 5.3, minHobbies: 90 }
+
+function splitColumn(skills, hobbies) {
+  const { top, bottom, gap, minHobbies } = COLUMN
+  const layout = (hs) => {
+    const ht = top + hs + gap // top of the hobbies panel
+    return {
+      hs,
+      skills: layoutCloud(skills, { x: 152.5, y: top + 32.5, w: 186.3, h: hs - 35.3 }),
+      hobbies: layoutCloud(hobbies, { x: 152.5, y: ht + 30.4, w: 186.3, h: bottom - ht - 32.6 }),
+    }
+  }
+  const worst = (r) => Math.min(r.skills.scale, r.hobbies.scale)
+  let lo = 150, hi = bottom - top - gap - minHobbies, best = null
+  for (let i = 0; i < 7; i++) {
+    const r = layout((lo + hi) / 2)
+    if (!best || worst(r) > worst(best)) best = r
+    if (r.skills.scale < r.hobbies.scale) lo = r.hs
+    else hi = r.hs
+  }
+  return best
+}
+
+// Draws a cloud laid out by layoutCloud.
+function drawCloud(overlay, res, debug) {
   if (debug)
     for (const c of Object.values(res.cells))
       svgEl('rect', { x: c.x, y: c.y, width: c.w, height: c.h, fill: 'none', stroke: 'red', 'stroke-width': 0.3 }, overlay)
@@ -235,6 +264,9 @@ async function main() {
     return document.fonts.load(`${s} ${w} 12px "Open Sans"`)
   }))
 
+  const palette = d.cv.palette || {}
+  for (const [k, v] of Object.entries(palette)) document.documentElement.style.setProperty(`--${k}`, v)
+
   const page = document.getElementById('page')
   sidebar(page, d)
   header(page, d)
@@ -251,9 +283,16 @@ async function main() {
   drawWork()
   drawEdu()
 
+  // Clouds without their own colours take the palette's.
+  const colored = (spec) => ({ ...spec, style: { colors: { key: palette['cloud-key'], normal: palette.cloud }, ...spec.style } })
+  const split = splitColumn(colored(d.skills), colored(d.hobbies))
+  const hobbiesTop = COLUMN.top + split.hs + COLUMN.gap
+  css(skills, { height: split.hs })
+  css(hobbies, { top: hobbiesTop, height: COLUMN.bottom - hobbiesTop })
   const stats = {
-    skills: cloud(overlay, d.skills, { x: 152.5, y: 233, w: 186.3, h: 440.5 }, d.debug),
-    hobbies: cloud(overlay, d.hobbies, { x: 152.5, y: 712, w: 186.3, h: 120.5 }, d.debug),
+    skills: drawCloud(overlay, split.skills, d.debug),
+    hobbies: drawCloud(overlay, split.hobbies, d.debug),
+    split: +split.hs.toFixed(1),
   }
   page.appendChild(overlay) // above the panel backgrounds
   await Promise.all([...document.images].map((i) => i.complete || new Promise((ok) => (i.onload = i.onerror = ok))))

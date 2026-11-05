@@ -21,10 +21,10 @@
 style:
   base: 4.2           # font size (pt) of level 1, before scaling
   ratio: 1.18         # size factor between two consecutive levels
-  padding: 0.6        # minimal gap between two words (pt)
+  padding: 2.4        # minimal gap between two words (pt)
   spill: 6            # how far (pt) a group may overflow its area
   vertical: 0.22      # share of words drawn vertically
-  colors: {key: "#58595b", normal: "#808285"}
+  # colors: {key: "#…", normal: "#…"}   default: cloud-key / cloud of the palette (pdf.yaml)
   weights: {key: regular, normal: light}
 
 rows:
@@ -32,6 +32,7 @@ rows:
   - [Automation]
   - [Electronics]
   - [Business]
+  - [Military]
 
 groups:
   - name: Software
@@ -69,3 +70,14 @@ groups:
       Financial forecasts: 5
       Recruitment: 4
       Intellectual property: 4
+
+  - name: Military
+    skills:
+      Infantry scout: {level: 7, key: true}
+      Sniper: 5
+      Infiltration: 5
+      Mortar fire control: 4
+      Camouflage: 4
+      Intelligence: 4
+      Bivouac: 4
+      Immediate action drills: 4
