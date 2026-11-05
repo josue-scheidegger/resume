@@ -13,7 +13,7 @@ actions:
     type: secondary
 features:
   - title: Partner at LEON-Concept
-    details: Software, electronics and business development
+    details: Community and consulting
   - title: Co-founder of Grenat
     details: Improving with AI
   - title: Electronics & industrial automation engineer
