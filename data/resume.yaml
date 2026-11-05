@@ -1,0 +1,127 @@
+---
+firstname: Josué
+lastname: Scheidegger
+description: >
+    Electronics and automation engineer turned entrepreneur.
+    I build software and electronics, and the companies that carry them.
+    Polymath by nature, persevering by choice.
+    Until lambs become lions.
+type: human
+gender: male
+from: 1997-11-05
+height: 1.75±0.01 m
+energy: 5.84e+18±1.80e+17 J
+address:
+  street: Chemin de Clon 14
+  npa: 1405
+  city: Pomy
+  country: Switzerland
+  email: josue.scheidegger@leon-concept.swiss
+  website: https://leon-concept.swiss
+languages:
+  french: native
+  english: fluent (C2)
+education:
+  2013-2017:
+    school: CPNV
+    # city: TODO
+    degree:
+      - CFC Electronics Technician
+      - Vocational Baccalaureate
+  2018-2022:
+    school: HEIG-VD
+    city: Yverdon-les-Bains
+    degree:
+      - BSc Electronics & Industrial Automation
+work:
+  2018:
+    title: Military service
+    company:
+      name: Swiss Armed Forces
+      city: Bière
+    tags:
+      ? swiss-army
+    position:
+      - Recruit
+  2023-now:
+    title: Co-founder
+    company:
+      name: Grenat
+      city: Yverdon-les-Bains
+    tags:
+      ? startup
+      ? ai
+    position:
+      - Co-founder
+  2022-now:
+    title: CEO
+    company:
+      name: LEON-Concept Sàrl
+      city: Pomy
+    tags:
+      ? entrepreneurship
+      ? software
+      ? saas
+      ? training
+      ? community
+      ? technical-mandates
+    position:
+      - CEO
+  2022-2024:
+    title: Applied R&D Associate
+    company:
+      name: HEIG-VD
+      city: Yverdon-les-Bains
+    tags:
+      ? research
+      ? machine-vision
+      ? python
+      ? automation
+      ? part-time
+    position:
+      - R&D Associate
+skills:
+  Software:
+    ? Python
+    ? C
+    ? C++
+    ? Linux
+    ? Git
+    ? Software architecture
+    ? Shell
+    ? CI/CD
+  Automation:
+    ? Machine vision
+    ? Machine learning
+    ? Fieldbus
+  Electronics:
+    ? Soldering
+    ? Schematic
+    ? Routing
+    ? Troubleshooting
+  Business:
+    ? Entrepreneurship
+    ? Business plan
+    ? Pitch
+    ? Fundraising
+    ? Financial forecasts
+    ? Recruitment
+    ? Intellectual property
+hobbies:
+  ? Systema
+  ? Spirituality
+  ? Horsemanship
+  ? Craftsmanship
+  ? Photography
+  ? Psychology
+  ? Nature
+mindset:
+  ? INFJ (Ni-Fe-Ti-Se)
+  ? Polymath
+  ? Creative
+  ? Persevering
+flaws:
+  ? Overthinker
+  ? Perfectionist
+  ? Paradoxical
+  ? Unconventional

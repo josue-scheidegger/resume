@@ -1,0 +1,71 @@
+# Skills word cloud of the PDF résumé (rendered by pdf/build.mjs).
+#
+# Each group is a family of related skills; its words are kept together in
+# one area of the panel. Every skill is either a bare level or an object:
+#
+#   Python: 7                       # level only
+#   C++: {level: 7, key: true}      # with options
+#
+#   level   1..10  mastery, drives the font size
+#                  (size = base × ratio^(level-1), then the whole cloud is
+#                  scaled up as much as the panel allows)
+#   key     true   main skill of the group: dark colour, regular weight
+#   weight  light | regular | semibold | bold   overrides the font weight
+#   rotate  true | false   force vertical / horizontal (default: automatic)
+#
+# `rows` arranges the groups in the panel, top to bottom. A row is split
+# horizontally between its groups in proportion to their size; a nested
+# list inside a row is stacked vertically (and so on, alternating).
+# Groups missing from `rows` are appended at the bottom.
+
+style:
+  base: 4.2           # font size (pt) of level 1, before scaling
+  ratio: 1.18         # size factor between two consecutive levels
+  padding: 0.6        # minimal gap between two words (pt)
+  spill: 6            # how far (pt) a group may overflow its area
+  vertical: 0.22      # share of words drawn vertically
+  colors: {key: "#58595b", normal: "#808285"}
+  weights: {key: regular, normal: light}
+
+rows:
+  - [Software]
+  - [Automation]
+  - [Electronics]
+  - [Business]
+
+groups:
+  - name: Software
+    skills:
+      Python: {level: 8, key: true}
+      C: {level: 7, key: true}
+      C++: {level: 6, key: true}
+      Linux: 6
+      Git: 6
+      Software architecture: 5
+      Shell: 4
+      CI/CD: 4
+
+  - name: Automation
+    skills:
+      Automation: {level: 8, key: true}
+      Machine vision: {level: 7, key: true}
+      Machine learning: 6
+      Fieldbus: 5
+
+  - name: Electronics
+    skills:
+      Electronics: {level: 7, key: true}
+      Soldering: 5
+      Schematic: 4
+      Routing: 4
+      Troubleshooting: 4
+
+  - name: Business
+    skills:
+      Entrepreneurship: {level: 8, key: true}
+      Business plan: 6
+      Pitch: 5
+      Fundraising: 5
+      Financial forecasts: 5
+      Recruitment: 4
+      Intellectual property: 4

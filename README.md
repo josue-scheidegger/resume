@@ -1,49 +1,55 @@
 # Resumé
 
-My personal resumé, available here: https://cv.chevallier.io/
+My personal resumé, available here: https://josue-scheidegger.github.io/resume/
 
-## Hosting
+Forked from [yves-chevallier/resume](https://github.com/yves-chevallier/resume).
 
-The site is built with VuePress and deployed to GitHub Pages by the
-[`Deploy CV`](.github/workflows/deploy.yml) workflow when a `v*` tag is pushed.
+## Layout
 
-It is served on the custom domain **cv.chevallier.io** via a CNAME record
-pointing at GitHub Pages:
-
-```dns
-cv  600  IN  CNAME  yves-chevallier.github.io.
 ```
-
-The domain is pinned in [`docs/.vuepress/public/CNAME`](docs/.vuepress/public/CNAME)
-so GitHub Pages keeps it across deployments, and `base` is set to `/` in the
-VuePress config accordingly.
-
-## PDF
-
-The PDF résumé and its preview image are generated from the data:
-
-```sh
-npx playwright install chromium   # once
-npm run cv:build                  # → docs/.vuepress/public/resume.pdf + images/resume.png
+data/   what you edit: the résumé data and the photo
+pdf/    the PDF engine (page layout, word clouds, icons)
+site/   the VuePress site
+out/    everything generated (ignored by git): resume.pdf, resume.png, site/
 ```
 
 | File | Content |
 |---|---|
-| [`docs/.vuepress/public/resume.yaml`](docs/.vuepress/public/resume.yaml) | Identity, address, work, education, mindset (also published as `/resume.yaml`) |
-| [`cv/cv.yaml`](cv/cv.yaml) | PDF-only data: headline, sports, future, QR code, social links, overrides |
-| [`cv/skills.yaml`](cv/skills.yaml) | Skills cloud: groups, mastery level (1–10) of each skill, group placement |
-| [`cv/hobbies.yaml`](cv/hobbies.yaml) | Hobbies cloud, same format |
+| [`data/resume.yaml`](data/resume.yaml) | Identity, address, work, education, mindset, flaws (also shown on the site's YAML page) |
+| [`data/pdf.yaml`](data/pdf.yaml) | PDF-only data: headline, sports, future, QR code, social links, overrides |
+| [`data/skills.yaml`](data/skills.yaml) | Skills cloud: groups, mastery level (1–10) of each skill, group placement |
+| [`data/hobbies.yaml`](data/hobbies.yaml) | Hobbies cloud, same format |
+| [`data/photo.jpg`](data/photo.jpg) | Photo of the sidebar (square) |
 
-The page is laid out in HTML/CSS ([`cv/page.css`](cv/page.css),
-[`cv/render.js`](cv/render.js)) and printed by headless Chromium, so the PDF
+## PDF
+
+```sh
+npx playwright install chromium   # once
+npm run pdf                       # → out/resume.pdf + out/resume.png
+```
+
+The page is laid out in HTML/CSS ([`pdf/page.css`](pdf/page.css),
+[`pdf/render.js`](pdf/render.js)) and printed by headless Chromium, so the PDF
 keeps real, selectable text in Open Sans.
 
-The word clouds ([`cv/cloud.js`](cv/cloud.js)) keep each group of skills in
+The word clouds ([`pdf/cloud.js`](pdf/cloud.js)) keep each group of skills in
 its own area of the panel (a treemap sized by the words of the group), size
 every word by its mastery level, and place the words along a spiral with
 pixel-exact collision tests, so they never overlap. The whole cloud is then
-scaled to the largest size that still fits. `npm run cv:debug` draws the group
-areas in red (`cv/debug.pdf`).
+scaled to the largest size that still fits. `npm run pdf:debug` draws the group
+areas in red (`out/debug.pdf`).
 
-The previous Illustrator version is kept in
-[`cv/legacy/resume-illustrator.pdf`](cv/legacy/resume-illustrator.pdf).
+## Site
+
+```sh
+npm run site:dev     # http://localhost:4000/resume/ (run `npm run pdf` first)
+npm run build        # PDF + site → out/site/
+```
+
+The PDF and its preview are not committed: the site copies them from `out/`
+(see [`site/.vuepress/config.js`](site/.vuepress/config.js)).
+
+The [`Deploy CV`](.github/workflows/deploy.yml) workflow builds the PDF and the
+site and deploys them to GitHub Pages when a `v*` tag is pushed (repository
+settings → Pages → Source: GitHub Actions). The site is served from the
+project path `/resume/`, so `base` is set to `/resume/` in the VuePress config.

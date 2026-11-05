@@ -107,6 +107,7 @@ body {
 .qr svg { display: block; width: 100%; height: 100%; }
 .social { position: absolute; left: 4.5pt; font-size: 9pt; white-space: nowrap; }
 .social .row { position: absolute; display: flex; align-items: center; }
+.social-text a { color: inherit; text-decoration: none; }
 
 /* Timelines */
 .entries { position: absolute; }

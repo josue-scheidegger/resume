@@ -1,0 +1,29 @@
+# Presentation data of the PDF résumé that has no place in resume.yaml.
+# Everything else (identity, address, work, education, mindset...) is read
+# from data/resume.yaml.
+
+# Values of resume.yaml replaced in the PDF only (the sidebar is narrow).
+overrides:
+  address:
+    street: Ch. de Clon 14
+
+uuid: d8f6be22-40d0-4041-ab5d-590845b0e337
+headline: [Entrepreneur, AutomationEngineer]
+
+# Printed as print("...") in the sidebar.
+sports: [Systema, Horse riding, Munz Floor]
+
+future: [Community, Real estate]
+
+qr:
+  url: https://josue-scheidegger.github.io/resume/
+
+# The icon names the service, so `text` is only the handle (the sidebar is
+# narrow); `url` makes it a link in the PDF.
+social:
+  - icon: github
+    text: josue-scheidegger
+    url: https://github.com/josue-scheidegger
+  - icon: linkedin
+    text: josue-scheidegger
+    url: https://www.linkedin.com/in/josue-scheidegger/

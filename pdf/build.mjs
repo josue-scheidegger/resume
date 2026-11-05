@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 // Renders the PDF résumé (and its PNG preview) from the YAML data.
 //
-//   node cv/build.mjs [--pdf out.pdf] [--png out.png] [--png-width 583] [--debug]
+//   node pdf/build.mjs [--pdf out.pdf] [--png out.png] [--png-width 583] [--debug]
 //
-// Data: docs/.vuepress/public/resume.yaml (+ cv/cv.yaml, cv/skills.yaml,
-// cv/hobbies.yaml). The page itself is cv/page.html + page.css + render.js,
-// laid out and printed by headless Chromium (Playwright).
+// Data: data/resume.yaml (+ data/pdf.yaml, data/skills.yaml, data/hobbies.yaml,
+// data/photo.jpg). The page itself is pdf/page.html + page.css + render.js,
+// laid out and printed by headless Chromium (Playwright). Output: out/.
 
 import { readFile, readdir, mkdir } from 'node:fs/promises'
 import { dirname, join, resolve, extname, basename } from 'node:path'
@@ -17,12 +17,13 @@ import { chromium } from 'playwright'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = resolve(here, '..')
-const pub = join(root, 'docs/.vuepress/public')
+const src = join(root, 'data')
+const out = join(root, 'out')
 
 const { values: opt } = parseArgs({
   options: {
-    pdf: { type: 'string', default: join(pub, 'resume.pdf') },
-    png: { type: 'string', default: join(pub, 'images/resume.png') },
+    pdf: { type: 'string', default: join(out, 'resume.pdf') },
+    png: { type: 'string', default: join(out, 'resume.png') },
     'png-width': { type: 'string', default: '583' },
     debug: { type: 'boolean', default: false },
   },
@@ -38,11 +39,11 @@ function merge(base, over) {
   return out
 }
 
-const cv = await load(join(here, 'cv.yaml'))
-const resume = merge(await load(join(pub, 'resume.yaml')), cv.overrides)
+const cv = await load(join(src, 'pdf.yaml'))
+const resume = merge(await load(join(src, 'resume.yaml')), cv.overrides)
 const icons = {}
-for (const f of await readdir(join(here, 'assets/icons')))
-  if (extname(f) === '.svg') icons[basename(f, '.svg')] = await readFile(join(here, 'assets/icons', f), 'utf8')
+for (const f of await readdir(join(here, 'icons')))
+  if (extname(f) === '.svg') icons[basename(f, '.svg')] = await readFile(join(here, 'icons', f), 'utf8')
 
 const qr = await QRCode.toString(cv.qr?.url || resume.address?.website, {
   type: 'svg', margin: 0, errorCorrectionLevel: 'M',
@@ -51,8 +52,8 @@ const qr = await QRCode.toString(cv.qr?.url || resume.address?.website, {
 
 const data = {
   resume, cv, icons, qr,
-  skills: await load(join(here, 'skills.yaml')),
-  hobbies: await load(join(here, 'hobbies.yaml')),
+  skills: await load(join(src, 'skills.yaml')),
+  hobbies: await load(join(src, 'hobbies.yaml')),
   debug: opt.debug,
 }
 
@@ -78,7 +79,7 @@ try {
     }
   })
   await page.addInitScript((d) => { window.CV_DATA = d }, data)
-  await page.goto('http://cv.local/cv/page.html')
+  await page.goto('http://cv.local/pdf/page.html')
   await page.waitForFunction(() => window.CV_READY || window.CV_ERROR, null, { timeout: 120000 })
   const err = await page.evaluate(() => window.CV_ERROR)
   if (err) throw new Error(err)

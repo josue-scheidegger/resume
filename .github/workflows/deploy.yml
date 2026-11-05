@@ -36,13 +36,15 @@ jobs:
           cache: npm
 
       - run: npm ci
-      - run: npm run docs:build
+      # Chromium imprime le PDF ; le site en publie une copie.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vuepress/dist
+          path: out/site
 
       - id: deployment
         uses: actions/deploy-pages@v4

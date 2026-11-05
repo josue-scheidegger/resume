@@ -14,7 +14,7 @@ const BASELINE = 0.888
 // Icon boxes (pt) on the original page; their size is the SVG viewBox.
 const ICON_BOX = {
   skills: [153, 203], work: [350, 203], education: [350, 577],
-  hobbies: [151, 684], future: [352, 766], github: [10, 793], stackoverflow: [11, 811],
+  hobbies: [151, 684], future: [352, 766], github: [10, 793], linkedin: [10, 811],
 }
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c])
@@ -95,16 +95,16 @@ function sidebar(page, d) {
   const side = panel(page, 'sidebar')
   const O = [7.3, 8] // sidebar origin on the page
 
-  const photo = css(el('div', 'photo', `<img src="assets/photo.jpg" alt="">`, side),
+  const photo = css(el('div', 'photo', `<img src="../data/photo.jpg" alt="">`, side),
     { left: 20 - O[0], top: 16.3 - O[1], width: 107.5, height: 107.5 })
-  css(photo.querySelector('img'), { left: -6.8, top: -4.4, width: 117.1, height: 116.7 })
+  css(photo.querySelector('img'), { left: 0, top: 0, width: 107.5, height: 107.5 })
 
   const blocks = css(el('div', 'blocks', undefined, side), { top: 126.1 })
   const block = (iconName, lines) => {
     const holder = el('div', 'block-icon', undefined, blocks)
     const ic = icon(iconName, holder)
     ic.style.color = '#fff'
-    el('div', '', lines.join('\n'), blocks)
+    return el('div', '', lines.join('\n'), blocks)
   }
 
   const a = r.address || {}
@@ -120,7 +120,14 @@ function sidebar(page, d) {
     tag('street', a.street), tag('npa', a.npa), tag('city', a.city),
     dim('</address>'),
   ])
-  if (a.email) block('mail', [`${dim('msg[“to”] = ')}${esc(a.email)}`])
+  if (a.email) {
+    const mail = block('mail', [`${dim('msg[“to”] = ')}${esc(a.email)}`])
+    // Too wide for the sidebar: break the address before its domain.
+    const at = a.email.indexOf('@')
+    if (mail.scrollWidth > mail.clientWidth && at > 0)
+      mail.innerHTML = [`${dim('msg[“to”] = ')}${esc(a.email.slice(0, at))}`,
+        `${IND}${dim('+ ')}${esc(a.email.slice(at))}`].join('\n')
+  }
   if (a.phone) block('phone', [`${dim('tel:')}${esc(a.phone)}`])
   if (r.languages)
     block('globe', [
@@ -129,14 +136,17 @@ function sidebar(page, d) {
       dim('...'),
     ])
   if (cv.sports?.length) block('fitness', cv.sports.map((s) => `${dim('print(“')}${esc(s)}${dim('”)')}`))
-  if (r.mindset) block('brain', Object.keys(r.mindset).map(esc))
+  // Flaws follow the mindset in the same block, dimmed.
+  if (r.mindset || r.flaws)
+    block('brain', [...Object.keys(r.mindset || {}).map(esc), ...Object.keys(r.flaws || {}).map(dim)])
 
   // QR code and social links stick to the bottom of the sidebar.
   css(el('div', 'qr', d.qr, side), { left: 52.4 - O[0], top: 731.5 - O[1], width: 41.8, height: 41.8 })
   ;(cv.social || []).forEach((s, i) => {
     const [ix, iy] = ICON_BOX[s.icon] || [10, 793 + 17.7 * i]
     iconAt(s.icon, side, ix - O[0], iy - O[1]).style.color = '#fff'
-    textAt(side, 'social-text', esc(s.text), 29.2 - O[0], 805.3 + 17.7 * i - O[1], 9).style.whiteSpace = 'nowrap'
+    const text = s.url ? `<a href="${esc(s.url)}">${esc(s.text)}</a>` : esc(s.text)
+    textAt(side, 'social-text', text, 29.2 - O[0], 805.3 + 17.7 * i - O[1], 9).style.whiteSpace = 'nowrap'
   })
 }
 
