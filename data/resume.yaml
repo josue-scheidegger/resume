@@ -3,8 +3,8 @@ firstname: Josué
 lastname: Scheidegger
 description: >
     Electronics and automation engineer turned entrepreneur.
-    I build software and electronics, and the companies that carry them.
-    Polymath by nature, persevering by choice.
+    Partner at LEON-Concept and co-founder of Grenat.
+    I develop software and electronics, and I take part in running both companies.
 type: human
 gender: male
 from: 1997-11-05
@@ -21,6 +21,10 @@ languages:
   french: native
   english: fluent (C2)
 education:
+  1997-now:
+    school: Life
+    degree:
+      - In progress
   2013-2017:
     school: CPNV
     # city: TODO
@@ -59,12 +63,9 @@ work:
       name: LEON-Concept Sàrl
       city: Pomy
     tags:
-      ? entrepreneurship
-      ? software
-      ? saas
-      ? training
       ? community
-      ? technical-mandates
+      ? systema
+      ? consulting
     position:
       - Partner
   2022-2024:
@@ -131,4 +132,3 @@ flaws:
   ? Overthinker
   ? Perfectionist
   ? Paradoxical
-  ? Unconventional

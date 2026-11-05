@@ -1,5 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 32" width="31" height="32">
-<path d="M5.675 10.628 L5.675 20.453 C5.675 22.894 10.073 24.874 15.5 24.874 C20.926 24.874 25.324 22.894 25.324 20.453 L25.324 10.628" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M21.395 26.348 L23.851 29.787 L18.939 29.787 L21.395 26.348 L21.395 12.594" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.5 15.541 L29.254 8.664 L15.5 1.787 L1.746 8.664Z" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+<g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10.6 10.8 C10.2 6.2 12.4 3.2 15.5 3.2 C18.6 3.2 20.8 6.2 20.4 10.8"/>
+<path d="M10.6 10.8 C10.8 15.2 12.6 19.6 15.5 20.6 C18.4 19.6 20.2 15.2 20.4 10.8"/>
+<path d="M11 7.4 C11.8 6.4 12.8 6.9 13.4 6.2 C14.2 6.9 15 6.2 15.5 6.2 C16 6.2 16.8 6.9 17.6 6.2 C18.2 6.9 19.2 6.4 20 7.4"/>
+<path d="M12.6 10.2 L14.2 10.2 M16.8 10.2 L18.4 10.2"/>
+<path d="M15.5 10.6 L15 12.9 L16 12.9"/>
+<path d="M13.2 16.6 L14 18.4 M17.8 16.6 L17 18.4"/>
+<path d="M12.4 19.6 C9.6 20.6 7.2 22.6 6.6 27.5 M18.6 19.6 C21.4 20.6 23.8 22.6 24.4 27.5"/>
+<path d="M19.6 21 C17.4 22.8 14.6 25.2 12.2 27.5"/>
+<path d="M5 27.5 L26 27.5 M9.5 27.5 L9.5 30.5 L21.5 30.5 L21.5 27.5"/>
+</g>
 </svg>

@@ -10,7 +10,8 @@ style:
 
 rows:
   - [Systema, Spirituality]
-  - [Horsemanship, Psychology, Nature]
+  - [Horsemanship, Nature]
+  - [Psychology]
 
 groups:
   - name: Systema
@@ -20,6 +21,7 @@ groups:
       Combat: 5
       Nervous system: 4
       Movement: 4
+      Fascia: 4
 
   - name: Spirituality
     skills:
@@ -36,14 +38,19 @@ groups:
       Horsemanship: {level: 6, key: true}
       Grooming: 4
       Liberty work: 4
+      Stable management: 4
 
   - name: Psychology
     skills:
       Psychology: {level: 5, key: true}
       Jung: 4
+      Jordan Peterson: 3
+      Konstantin Komarov: 3
 
   - name: Nature
     skills:
       Nature: {level: 6, key: true}
       Wildlife: 4
+      Ecosystems: 4
+      Rewilding: 4
       Geography: 3

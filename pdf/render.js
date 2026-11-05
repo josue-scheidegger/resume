@@ -204,12 +204,13 @@ function future(page, d, overlay) {
   const O = [348, 763.2]
   sectionTitle(p, 'future', 'Future ?', 385.8, 786.6, O)
   const items = d.cv.future || []
-  // Zigzag between two columns; the step shrinks so the last item stays in
-  // the panel (baselines from 38.8 to 65 pt).
-  const step = items.length > 1 ? Math.min(19.6, 26.2 / (items.length - 1)) : 0
+  // Two columns, filled row by row; the row step shrinks so the last row stays
+  // in the panel (baselines from 38.8 to 65 pt).
+  const rows = Math.ceil(items.length / 2)
+  const step = rows > 1 ? Math.min(19.6, 26.2 / (rows - 1)) : 0
   items.forEach((t, i) => {
-    const x = O[0] + (i % 2 ? 30.3 : 130.8)
-    const base = O[1] + 38.8 + step * i
+    const x = O[0] + (i % 2 ? 130.8 : 30.3)
+    const base = O[1] + 38.8 + step * Math.floor(i / 2)
     svgEl('circle', { cx: x + 3.75, cy: base - 3.05, r: 3.25, fill: 'none', stroke: d.cv.palette?.line, 'stroke-width': 1 }, overlay)
     textAt(p, 'future-item', esc(t), x + 12.4 - O[0], base - O[1], 10.27)
   })
