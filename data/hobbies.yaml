@@ -46,12 +46,12 @@ groups:
       Jung: 4
       Jordan Peterson: 3
       Konstantin Komarov: 3
+      Annick de Souzenelle: 3
 
   - name: Nature
     skills:
       Nature: {level: 6, key: true}
       Wildlife: 4
       Ecosystems: 4
-      Rewilding: 4
       Bushcraft: 4
       Geography: 3

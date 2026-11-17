@@ -40,6 +40,7 @@ groups:
       Python: {level: 8, key: true}
       C: {level: 7, key: true}
       C++: {level: 6, key: true}
+      C#: {level: 5, rotate: false}
       Linux: 6
       Git: 6
       Software architecture: 5
