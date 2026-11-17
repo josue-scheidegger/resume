@@ -5,7 +5,7 @@ style:
   ratio: 1.18
   padding: 2.4
   spill: 6
-  vertical: 0
+  vertical: 0.3
   weights: {key: light, normal: light}
 
 rows:

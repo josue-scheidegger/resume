@@ -35,8 +35,12 @@ keeps real, selectable text in Open Sans.
 The word clouds ([`pdf/cloud.js`](pdf/cloud.js)) keep each group of skills in
 its own area of the panel (a treemap sized by the words of the group), size
 every word by its mastery level, and place the words along a spiral with
-pixel-exact collision tests, so they never overlap. The whole cloud is then
-scaled to the largest size that still fits. `npm run pdf:debug` draws the group
+pixel-exact collision tests, so they never overlap. In each group, a share
+`style.vertical` of the ink is set vertically: the subset of words closest to
+that share is picked, avoiding words taller than their area, and what a group
+misses is carried over to the next one. The largest word of a group and short
+words stay horizontal. The whole cloud is then scaled to the largest size that
+still fits, so more vertical words means smaller text. `npm run pdf:debug` draws the group
 areas in red (`out/debug.pdf`).
 
 ## Site

@@ -91,8 +91,8 @@ try {
     await mkdir(dirname(opt.png), { recursive: true })
     await page.screenshot({ path: opt.png, clip: { x: 0, y: 0, width: 595.28 * 4 / 3, height: 841.89 * 4 / 3 } })
   }
-  console.log(`skills: ${stats.skills.words} words, scale ${stats.skills.scale}`)
-  console.log(`hobbies: ${stats.hobbies.words} words, scale ${stats.hobbies.scale}`)
+  for (const k of ['skills', 'hobbies'])
+    console.log(`${k}: ${stats[k].words} words, scale ${stats[k].scale}, vertical ${stats[k].vertical}%`)
   console.log(`skills panel: ${stats.split} pt high`)
   console.log(`→ ${opt.pdf}${opt.png ? `\n→ ${opt.png}` : ''}`)
 } finally {

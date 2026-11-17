@@ -2,21 +2,31 @@
 //
 // 1. The cloud box is split into one rectangle per group (slicing treemap
 //    driven by `rows`), each proportional to the area of the group's words.
-// 2. Words are placed from the largest to the smallest, along a spiral that
+// 2. Each group sets a share `style.vertical` of its ink vertically (see
+//    `orient`). The orientation is fixed before placement: a vertical word
+//    never falls back to horizontal, so the text shrinks instead.
+// 3. Words are placed from the largest to the smallest, along a spiral that
 //    starts at the centre of their group's rectangle. Collisions are tested on
 //    the real glyph shapes (bit masks), so small words can nest in the holes
 //    of big ones, but never overlap.
-// 3. The whole cloud is scaled by bisection to the largest size at which every
+// 4. The whole cloud is scaled by bisection to the largest size at which every
 //    word still fits in its group's area.
 
 const RES = 3 // bitmap pixels per pt
 const WEIGHTS = { light: 300, regular: 400, semibold: 600, bold: 700 }
 
-// Deterministic pseudo-random value in [0, 1) from a string.
-function hash01(str) {
-  let h = 2166136261
-  for (const c of str) h = Math.imul(h ^ c.codePointAt(0), 16777619)
-  return ((h >>> 0) % 10007) / 10007
+// Orientation tuning.
+const MIN_VERTICAL_EM = 2 // shorter words (C, C++, C#, Git) stay horizontal
+const MAX_ELIGIBLE = 12 // per group, so that 2^n subsets stay cheap
+const FIT = 2 // weight of the "taller than its area" penalty
+const FIT_FREE = 0.85 // vertical length / area height allowed for free
+const FILL = 0.55 // ink / box area of a typical cloud, for the first scale guess
+const TOLERANCE = 0.05 // accepted gap between the vertical share and its target
+
+// Advance width of a word, in em.
+function advanceEm(text, weight) {
+  ctx.font = `${weight} 100px "Open Sans"`
+  return ctx.measureText(text).width / 100
 }
 
 // Bit matrix, rows of 32-bit words, most significant bit = leftmost pixel.
@@ -156,11 +166,6 @@ function normalise(spec) {
       const o = typeof v === 'object' && v !== null ? v : { level: v }
       const key = !!o.key
       const weight = o.weight || (key ? style.weights?.key : style.weights?.normal) || 'light'
-      // Only small words turn vertical, and never when `vertical` is 0.
-      const share = style.vertical ?? 0.2
-      let rotate = o.rotate
-      if (rotate === undefined)
-        rotate = !share || o.level > 6 ? false : hash01(text) < share ? 'prefer' : 'auto'
       words.push({
         text: String(text),
         group: g.name,
@@ -169,7 +174,7 @@ function normalise(spec) {
         size0: (style.base ?? 4.2) * Math.pow(style.ratio ?? 1.27, o.level - 1),
         weight: WEIGHTS[weight] ?? weight,
         color: key ? style.colors?.key : style.colors?.normal,
-        rotate, // true | false | 'prefer' (vertical first) | 'auto' (horizontal first)
+        rotate: o.rotate, // true | false | undefined (chosen by `orient`)
       })
     })
   })
@@ -205,18 +210,84 @@ export function layoutCloud(spec, box, obstacles = []) {
     return cache.get(k)
   }
 
+  // Orientation candidates. `ink` (advance × size, pt² at scale 1) is the
+  // visual weight of a word, `len` its length once vertical (pt at scale 1).
+  const target = Math.max(0, Math.min(1, style.vertical ?? 0.33))
+  const groupOrder = rows.flat(Infinity)
+  const byGroup = Object.fromEntries(names.map((n) => [n, order.filter((w) => w.group === n)]))
+  let totalInk = 0
+  for (const w of words) {
+    const em = advanceEm(w.text, w.weight)
+    w.ink = em * w.size0 * w.size0
+    w.len = em * w.size0 + 2 * pad
+    totalInk += w.ink
+  }
+  for (const ws of Object.values(byGroup))
+    ws.forEach((w, i) => {
+      // The largest word of each group stays horizontal and titles its area.
+      w.eligible = target > 0 && i > 0 && w.rotate === undefined && w.len - 2 * pad >= MIN_VERTICAL_EM * w.size0
+    })
+
   // Treemap + bisection; the group that blocks a larger scale gets more room
-  // and the layout is retried, keeping the best result.
+  // and the layout is retried. The orientations are chosen again for each
+  // try, with the scale of the previous one as an estimate, but always against
+  // the treemap sized by ink alone: measuring them against the grown areas
+  // would let a tall vertical word earn the room that then justifies it.
+  const natural = slice(rows, { x: 0, y: 0, w: W, h: H }, true, weightOf, {})
+  const fits = (r) => Math.abs(r.share - target) <= TOLERANCE
+  const better = (r, b) => !b || (fits(r) !== fits(b) ? fits(r)
+    : fits(r) ? r.scale > b.scale : Math.abs(r.share - target) < Math.abs(b.share - target))
   let result = null
+  let last = null
   let stale = 0
   for (let i = 0; i < (style.balance ?? 30) && stale < 8; i++) {
     const cells = slice(rows, { x: 0, y: 0, w: W, h: H }, true, weightOf, {})
-    const r = bisect(cells, result?.scale)
-    if (!result || r.scale > result.scale) { result = r; stale = 0 } else stale++
+    const share = orient(natural, last?.scale ?? Math.sqrt((FILL * box.w * box.h) / totalInk))
+    const r = { ...bisect(cells, result?.scale), share }
+    if (better(r, result)) { result = r; stale = 0 } else stale++
+    last = r
     if (!r.blocker) break
     weights[r.blocker] *= 1.12
   }
   return finish(result)
+
+  // Picks the vertical words of every group, so that a share `target` of its
+  // ink is vertical, by error diffusion at two levels:
+  // - inside a group, every subset of the eligible words is tried, and the one
+  //   whose ink is closest to the group's target wins, minus a penalty for
+  //   words longer than the group's area is high (at the estimated `scale`),
+  //   so that several medium words beat one tall pillar;
+  // - the error left by a group (bounded to half its target) is carried over
+  //   to the next one, so the whole cloud stays on target.
+  // Returns the vertical share of the whole cloud.
+  function orient(cells, scale) {
+    let carry = 0
+    let vertical = 0
+    for (const g of groupOrder) {
+      const ws = byGroup[g]
+      const A = ws.reduce((s, w) => s + w.ink, 0)
+      const T = target * A + Math.max(-target * A / 2, Math.min(target * A / 2, carry))
+      const height = cells[g].h / RES + 2 * spill / RES
+      const penalty = (w) => Math.max(0, (w.len * scale) / height - FIT_FREE) ** 2
+      const forced = ws.filter((w) => w.rotate === true)
+      const elig = ws.filter((w) => w.eligible).slice(0, MAX_ELIGIBLE)
+      const V0 = forced.reduce((s, w) => s + w.ink, 0)
+      const P0 = forced.reduce((s, w) => s + penalty(w), 0)
+      const pen = elig.map(penalty)
+      let best = { cost: Infinity, set: 0, V: V0 }
+      for (let set = 0; set < 1 << elig.length; set++) {
+        let V = V0, P = P0
+        for (let j = 0; j < elig.length; j++) if (set & (1 << j)) { V += elig[j].ink; P += pen[j] }
+        const cost = Math.abs(V - T) / A + FIT * P
+        if (cost < best.cost - 1e-9) best = { cost, set, V }
+      }
+      for (const w of ws) w.vertical = w.rotate === true
+      elig.forEach((w, j) => { w.vertical = !!(best.set & (1 << j)) })
+      carry = T - best.V
+      vertical += best.V
+    }
+    return vertical / totalInk
+  }
 
   function attempt(cells, scale) {
     const grid = new Bitmap(W, H)
@@ -232,10 +303,7 @@ export function layoutCloud(spec, box, obstacles = []) {
         x0: Math.max(0, Math.floor(c.x - spill)), y0: Math.max(0, Math.floor(c.y - spill)),
         x1: Math.min(W, Math.ceil(c.x + c.w + spill)), y1: Math.min(H, Math.ceil(c.y + c.h + spill)),
       }
-      const tries = w.rotate === true ? [m.v] : w.rotate === false ? [m.h]
-        : w.rotate === 'prefer' ? [m.v, m.h] : [m.h, m.v]
-      let pos = null
-      for (const t of tries) if ((pos = spiral(grid, t, c, lim))) break
+      const pos = spiral(grid, w.vertical ? m.v : m.h, c, lim)
       if (!pos) return { fail: w.group }
       grid.draw(pos.t.mask, pos.x, pos.y)
       placed.push({ w, t: pos.t, x: pos.x, y: pos.y })
@@ -269,9 +337,10 @@ export function layoutCloud(spec, box, obstacles = []) {
     return { scale: lo, placed: best, cells, blocker }
   }
 
-  function finish({ scale: lo, placed: best, cells }) {
+  function finish({ scale: lo, placed: best, cells, share }) {
   return {
     scale: lo,
+    vertical: share,
     cells: Object.fromEntries(Object.entries(cells).map(([k, c]) =>
       [k, { x: box.x + c.x / RES, y: box.y + c.y / RES, w: c.w / RES, h: c.h / RES }])),
     words: best.map(({ w, t, x, y }) => ({

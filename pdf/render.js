@@ -254,7 +254,7 @@ function drawCloud(overlay, res, debug) {
     if (w.rotate) t.setAttribute('transform', `rotate(${w.rotate} ${w.x.toFixed(2)} ${w.y.toFixed(2)})`)
     t.textContent = w.text
   }
-  return { scale: +res.scale.toFixed(3), words: res.words.length }
+  return { scale: +res.scale.toFixed(3), words: res.words.length, vertical: Math.round(res.vertical * 100) }
 }
 
 async function main() {

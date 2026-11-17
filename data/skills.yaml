@@ -23,7 +23,7 @@ style:
   ratio: 1.18         # size factor between two consecutive levels
   padding: 2.4        # minimal gap between two words (pt)
   spill: 6            # how far (pt) a group may overflow its area
-  vertical: 0.22      # share of words drawn vertically
+  vertical: 0.3       # share of the ink of each group set vertically (the text shrinks to fit)
   # colors: {key: "#…", normal: "#…"}   default: cloud-key / cloud of the palette (pdf.yaml)
   weights: {key: regular, normal: light}
 
